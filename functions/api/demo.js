@@ -93,6 +93,20 @@ export async function onRequestPost({ request, env }) {
             });
         }
 
+        // Insert into demo_accounts table
+        const { error: dbError } = await supabase
+            .from('demo_accounts')
+            .insert([{
+                name: fullName,
+                email: email,
+                password: password,
+                demo_start: demoStart
+            }]);
+
+        if (dbError) {
+            console.error('Supabase Demo Account Insert Error:', dbError);
+        }
+
         // 2. Send Email via Resend to info@moslogix.com
         const resendApiKey = env.RESEND_API_KEY || "re_huntHqkk_FzBA21W95denW9hE8athbHhC";
         const emailResponse = await fetch('https://api.resend.com/emails', {
