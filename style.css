@@ -26,7 +26,16 @@ body {
   overflow-x: hidden;
   background-image: 
     radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
+    radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  animation: bgPan 20s infinite alternate ease-in-out;
+}
+
+@keyframes bgPan {
+  0% { background-position: 0% 0%, 100% 100%, 0 0, 0 0; }
+  100% { background-position: 5% 5%, 95% 95%, 0 0, 0 0; }
 }
 
 h1, h2, h3 {
@@ -72,19 +81,24 @@ nav {
 .btn {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 9999px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s ease;
-  border: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  box-shadow: 0 4px 15px var(--primary-glow);
+  box-shadow: 0 4px 15px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+  background: linear-gradient(135deg, #5b54fa, #f460a8);
 }
 
 /* Hero Section */
@@ -127,14 +141,34 @@ nav {
 }
 
 .glass-panel {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 24px;
   padding: 3rem;
   max-width: 600px;
   margin: 0 auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-20deg);
+  animation: shine 8s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
 }
 
 /* Forms */
@@ -255,15 +289,16 @@ nav {
 
 .feature-image-container img {
   width: 100%;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--glass-border);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--dark);
+  filter: contrast(1.05) brightness(1.05);
 }
 
 .feature-image-container img:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 30px 60px rgba(79, 70, 229, 0.25), 0 0 0 1px rgba(79, 70, 229, 0.5);
+  transform: translateY(-10px) scale(1.02) perspective(1000px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 40px 80px -20px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(79, 70, 229, 0.6);
 }
 
 @media (max-width: 768px) {
