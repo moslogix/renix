@@ -29,7 +29,7 @@ export async function onRequestPost({ request, env }) {
         // 1. Initialize Supabase
         const supabaseUrl = env.VITE_SUPABASE_URL || 'https://olmsjbunvfxhtwbpnntn.supabase.co';
         // Note: we need the ANON key or SERVICE_ROLE key here. We'll use ANON key if passed via env.
-        const supabaseKey = env.VITE_SUPABASE_ANON_KEY;
+        const supabaseKey = env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sbXNqYnVudmZ4aHR3YnBubnRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjc1NDksImV4cCI6MjA4NjY0MzU0OX0.6ycgQ1yNWLI9un69NQxC3iP7jyAsqEDlANiUp3CQi8M';
         if (supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
           
