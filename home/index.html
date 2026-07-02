@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renix - Enterprise Management System</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/home/" class="logo">Renix</a>
+    <div class="nav-links">
+      <a href="#contact">Contact Us</a>
+      <a href="/demo/" class="btn">Try 14-Day Demo</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1 class="animate-up">The Future of Retail Management</h1>
+    <p class="animate-up" style="animation-delay: 0.1s">
+      Empower your business with the most advanced ecosystem for POS, Inventory, Finance, and Delivery. Scalable, reliable, and beautifully designed.
+    </p>
+    <div class="animate-up" style="animation-delay: 0.2s">
+      <a href="/demo/" class="btn">Get Started Now</a>
+      <a href="#contact" class="btn" style="background: rgba(255,255,255,0.1); box-shadow: none; margin-left: 1rem;">Talk to Sales</a>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section">
+    <h2 class="section-title">The Complete Ecosystem</h2>
+    <div class="features-container">
+      
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>The Command Center</h3>
+          <p>Get a complete bird's-eye view of your entire enterprise. Manage multiple branches, track real-time analytics, and make data-driven decisions from a beautifully designed, centralized dashboard.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/The Command Center.png" alt="The Command Center" />
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>Point of Sale (POS) Terminal</h3>
+          <p>A lightning-fast, intuitive POS system built for speed and reliability. Process transactions, handle split payments, and apply promotions seamlessly, all while keeping your queue moving.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/The Point of Sale (POS) Terminal.png" alt="POS Terminal" />
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>Multi-Branch Inventory</h3>
+          <p>Never lose track of your stock again. Automatically sync inventory across all locations, handle transfers effortlessly, and receive smart low-stock alerts before you run out of essential items.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/Multi-Branch Inventory Management.png" alt="Inventory Management" />
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>Finance & Accounting</h3>
+          <p>Automate your financial tracking with real-time revenue snapshots, expense categorization, and comprehensive tax reporting. Watch your profit margins grow with clear, actionable insights.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/Finance & Automated Accounting.png" alt="Finance Dashboard" />
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>Team & Shift Management</h3>
+          <p>Empower your workforce with role-based access control and detailed shift tracking. Monitor employee performance, manage payroll, and secure your operations with individual PINs.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/Team & Shift Management.png" alt="Team Management" />
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-text animate-up">
+          <h3>Delivery & Order Flow</h3>
+          <p>Streamline your dispatch operations from checkout to doorstep. Assign drivers, track order statuses in real-time, and calculate dynamic delivery zones automatically.</p>
+        </div>
+        <div class="feature-image-container animate-up" style="animation-delay: 0.2s">
+          <img src="../images/Delivery & Order Flow.png" alt="Delivery Flow" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2 class="section-title">Contact Us</h2>
+    <div class="glass-panel">
+      <form id="contactForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" name="email" required placeholder="john@company.com" />
+        </div>
+        <div class="form-group">
+          <label for="budget">Estimated Budget</label>
+          <select id="budget" name="budget">
+            <option value="Not sure">Not sure</option>
+            <option value="< $1k">&lt; $1,000</option>
+            <option value="$1k - $5k">$1,000 - $5,000</option>
+            <option value="$5k+">$5,000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">How can we help?</label>
+          <textarea id="message" name="message" required placeholder="Tell us about your project..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-full" id="submitBtn">Send Message</button>
+        <div id="contactMessage" class="message-box"></div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('submitBtn');
+      const msgBox = document.getElementById('contactMessage');
+      
+      const formData = new FormData(form);
+      formData.append('_subject', 'Renix Landing Inquiry');
+      
+      btn.innerText = 'Sending...';
+      btn.disabled = true;
+      msgBox.className = 'message-box';
+      
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData
+        });
+        
+        // Guard against non-JSON responses (e.g. 404 HTML pages)
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error('Server is not reachable. Make sure you are accessing via http://localhost:8788');
+        }
+        
+        if (data.success) {
+          msgBox.innerText = 'Thank you! We will get back to you shortly.';
+          msgBox.classList.add('success');
+          form.reset();
+        } else {
+          throw new Error(data.message || 'Failed to send message');
+        }
+      } catch (err) {
+        msgBox.innerText = 'Error: ' + err.message;
+        msgBox.classList.add('error');
+      } finally {
+        btn.innerText = 'Send Message';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

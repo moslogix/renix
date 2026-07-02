@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Your 14-Day Free Demo - Renix</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .demo-hero {
+      padding-top: 10rem;
+      padding-bottom: 2rem;
+    }
+    
+    .module-card {
+      background: rgba(79, 70, 229, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .module-card h3 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    
+    .module-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .module-links a {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      padding: 1rem;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .module-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/home/" class="logo">Renix</a>
+    <div class="nav-links">
+      <a href="/home/#contact">Contact Us</a>
+    </div>
+  </nav>
+
+  <section class="demo-hero section">
+    <div class="glass-panel" id="demoContainer">
+      <h2 class="section-title" style="margin-bottom: 1rem;">14-Day Free Demo</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+        Experience the full power of Renix across all our modules. No credit card required.
+      </p>
+      
+      <form id="demoForm">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" required placeholder="john@company.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Create Password</label>
+          <input type="password" id="password" required placeholder="Min. 6 characters" minlength="6" />
+        </div>
+        <button type="submit" class="btn btn-full" id="submitBtn">Start My Demo Now</button>
+        <div id="demoMessage" class="message-box"></div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('demoForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const fullName = document.getElementById('fullName').value;
+      
+      const btn = document.getElementById('submitBtn');
+      const msgBox = document.getElementById('demoMessage');
+      
+      btn.innerText = 'Setting up your environment...';
+      btn.disabled = true;
+      msgBox.className = 'message-box';
+      
+      try {
+        const response = await fetch('/api/demo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, fullName })
+        });
+        
+        // Guard against non-JSON responses (e.g. 404 HTML pages)
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error('Server is not reachable. Make sure you are accessing via http://localhost:8788');
+        }
+        
+        if (response.ok && data.success) {
+          // Replace form with success module
+          document.getElementById('demoContainer').innerHTML = `
+            <div class="module-card animate-up">
+              <h3>🎉 You are signed up!</h3>
+              <p style="color: var(--text-muted)">${data.message}</p>
+              <div style="margin-top: 1rem;">
+                <p>Use your email (<strong>${email}</strong>) and password to log in to any of the modules below:</p>
+              </div>
+              <div class="module-links">
+                <a href="https://demo-admin.renix.moslogix.com" target="_blank">
+                  <span>🛠️ Admin Dashboard</span>
+                  <span>Launch &rarr;</span>
+                </a>
+                <a href="https://demo-pos.renix.moslogix.com" target="_blank">
+                  <span>🛒 Point of Sale (POS)</span>
+                  <span>Launch &rarr;</span>
+                </a>
+                <a href="https://demo-inventory.renix.moslogix.com" target="_blank">
+                  <span>📦 Inventory System</span>
+                  <span>Launch &rarr;</span>
+                </a>
+              </div>
+            </div>
+          `;
+        } else {
+          throw new Error(data.message || 'Failed to sign up for demo.');
+        }
+      } catch (err) {
+        msgBox.innerText = err.message;
+        msgBox.classList.add('error');
+        btn.innerText = 'Start My Demo Now';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

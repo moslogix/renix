@@ -1,0 +1,5 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "renix-landing",
+  "compatibility_date": "2024-06-01",
+}
